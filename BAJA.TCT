@@ -1,0 +1,1493 @@
+*==================================================================================================
+* Staff Bar Recipe App Requirements.tct
+*==================================================================================================
+Private mobile-first staff reference app for bar recipes, wine information, food information, and allergen filtering
+
+*------------------
+* Document Control
+*------------------
+  - Document Name = Staff Bar Recipe App Requirements
+  - Format        = TCT
+  - Product Type  = Private staff-facing web app
+  - Deployment    = Vercel
+  - Main Device   = Mobile
+  - Secondary     = Desktop
+  - Status        = Draft, pending recipes and detailed menu data
+
+*-----------------
+* Product Summary
+*-----------------
+  - Build a private internal web app for store staff
+  - The app is used as a fast reference tool during service and training
+  - The app contains bar recipes, red wine notes, food descriptions, and allergen information
+  - The app helps staff quickly answer customer questions about drinks, food, wine, and dietary restrictions
+  - The app must be optimised for mobile use first
+  - The app must also work cleanly on desktop
+
+*--------------
+* Target Users
+*--------------
+  - Store staff
+  - Bar staff
+  - Floor staff
+  - New staff during training
+  - Managers or supervisors maintaining menu knowledge
+
+*--------------------
+* Access And Privacy
+*--------------------
+  - The app is not public-facing
+  - Only selected staff should be able to access the app
+  - The app should not be openly searchable or casually accessible by customers
+  - Access control should be simple enough for staff to use on mobile
+  - Suitable access options include password protection, staff login, invite-only user accounts, or protected deployment access
+  - The selected access method should prioritise low friction for staff and basic privacy for internal store content
+
+*-----------------------
+* Primary Content Areas
+*-----------------------
+  - Bar Recipes
+      - Cocktail and drink preparation reference
+      - Ingredients, measurements, method, garnish, glassware, and staff notes
+
+  - Wine
+      - Red wine descriptions and staff selling notes
+      - Style, flavour, body, tannin, dryness, region, and food pairing
+
+  - Food
+      - Food descriptions and key ingredients
+      - Dietary tags, allergens, and service notes
+
+  - Allergen Filter
+      - Staff can select customer restrictions
+      - App returns suitable food options
+      - App can also hide unsuitable food options
+
+*-----------------------
+* Bar Recipe Data Model
+*-----------------------
+  - Each bar recipe should support the following fields
+      - Drink Name
+      - Category
+      - Ingredients
+      - Measurements
+      - Preparation Method
+      - Glassware
+      - Ice
+      - Garnish
+      - Flavour Profile
+      - Difficulty
+      - Staff Notes
+      - Availability Status
+
+  - Recipe measurement format should be consistent
+      - Use ml for liquid measurements
+      - Use clear units for dashes, drops, slices, wedges, leaves, and egg white
+      - Avoid vague measurements unless the recipe intentionally uses them
+
+  - Recipe method should be written as clear service steps
+      - Build
+      - Shake
+      - Stir
+      - Strain
+      - Double strain
+      - Top
+      - Garnish
+      - Serve
+
+*-----------------
+* Wine Data Model
+*-----------------
+  - Each wine entry should support the following fields
+      - Wine Name
+      - Wine Type
+      - Varietal
+      - Country
+      - Region
+      - Body
+      - Tannin Level
+      - Acidity
+      - Sweetness Or Dryness
+      - Flavour Notes
+      - Food Pairing
+      - Staff Selling Notes
+      - Availability Status
+
+  - Red wine descriptions should be practical for staff
+      - Focus on how to explain the wine to customers
+      - Use simple tasting language
+      - Avoid overly technical wine language unless useful for selling or service
+
+*-----------------
+* Food Data Model
+*-----------------
+  - Each food item should support the following fields
+      - Dish Name
+      - Category
+      - Short Description
+      - Key Ingredients
+      - Allergen Tags
+      - Dietary Tags
+      - Gluten Free Status
+      - Coeliac Suitability
+      - Vegan Status
+      - Vegetarian Status
+      - Staff Notes
+      - Availability Status
+
+  - Food descriptions should help staff explain the dish quickly
+  - Allergen and dietary fields should be structured, not only written as free text
+  - Structured tags are required so filtering works accurately
+
+*----------------------------
+* Allergen And Dietary Model
+*----------------------------
+  - The app should track common allergens and dietary requirements
+  - Required tags include
+      - Gluten Free
+      - Contains Gluten
+      - Coeliac Suitable
+      - Not Coeliac Suitable
+      - Dairy Free
+      - Contains Dairy
+      - Nut Free
+      - Contains Nuts
+      - Vegetarian
+      - Vegan
+      - Contains Seafood
+      - Contains Egg
+      - Contains Soy
+
+  - Coeliac suitability must be stricter than general gluten-free status
+  - A dish can be gluten free but not coeliac suitable if cross-contamination risk exists
+  - Allergen information should be explicit and easy to verify
+  - Food items with uncertain allergen status should not be shown as safely suitable
+
+*-----------------
+* Filtering Logic
+*-----------------
+  - Staff should be able to filter food by customer needs
+  - The app should support positive filters
+      - Show gluten-free options
+      - Show coeliac-suitable options
+      - Show vegan options
+      - Show vegetarian options
+      - Show dairy-free options
+      - Show nut-free options
+
+  - The app should support exclusion filters
+      - Hide dishes containing gluten
+      - Hide dishes containing dairy
+      - Hide dishes containing nuts
+      - Hide dishes containing seafood
+      - Hide dishes containing egg
+      - Hide dishes containing soy
+
+  - The app should support combined restrictions
+      - Gluten free + dairy free
+      - Coeliac suitable + vegetarian
+      - Vegan + nut free
+      - Dairy free + no seafood
+      - Any other multi-tag combination
+
+  - Filtering result should show
+      - Suitable items
+      - Potentially unsuitable items when needed
+      - Clear reason why an item is excluded or marked unsafe
+
+*------------------------------
+* Mobile-First UX Requirements
+*------------------------------
+  - The app must be designed for mobile first
+  - Staff should be able to use it quickly during service
+  - Main actions should be reachable with minimal taps
+  - Search should be visible and fast
+  - Filter controls should be easy to operate with one hand
+  - Text should be readable on phone screens
+  - Tap targets should be large enough for quick use
+  - Content cards should avoid clutter
+  - Important dietary warnings should be visually clear
+  - The app should avoid heavy animations that slow down mobile performance
+  - The app should work well on iPhone and common Android phones
+
+*-------------------------
+* Desktop UX Requirements
+*-------------------------
+  - Desktop layout should be responsive
+  - Desktop should use available width efficiently
+  - Content can be displayed in wider cards, grids, or tables
+  - Search and filters should remain easy to access
+  - Desktop should be useful for managers entering, reviewing, or updating content
+
+*----------------------
+* Navigation Structure
+*----------------------
+  - Main navigation should include
+      - Bar
+      - Wine
+      - Food
+      - Allergens
+      - Search
+
+  - Mobile navigation should be simple and thumb-friendly
+  - Recommended mobile navigation style
+      - Bottom tab navigation
+      - Sticky search area where appropriate
+      - Filter drawer or filter chips for dietary restrictions
+
+  - Desktop navigation can use
+      - Sidebar
+      - Top navigation
+      - Section tabs
+
+*---------------------
+* Search Requirements
+*---------------------
+  - Search should work across all major content types
+  - Searchable fields should include
+      - Drink name
+      - Ingredient
+      - Recipe category
+      - Wine name
+      - Wine varietal
+      - Wine region
+      - Food name
+      - Food ingredient
+      - Allergen tag
+      - Dietary tag
+
+  - Search should feel instant on mobile
+  - Search results should be grouped clearly by content type
+  - Search should tolerate simple staff input and partial words
+
+*------------------
+* Visual Direction
+*------------------
+  - Visual style should follow the Angelica reference palette
+  - Overall mood should be dark, warm, bar-like, refined, and practical
+  - The interface should use a deep espresso brown background with bright orange accent elements
+  - Primary text should be clean white for readability
+  - Secondary text can use warm off-white or muted beige
+  - The design should be clean rather than decorative
+  - The app should feel polished but not over-designed
+  - The design should support fast reading under service pressure
+  - App style should support both dark bar environment readability and normal daylight readability
+
+*-------------------
+* Colour Parameters
+*-------------------
+  - App Background        = #210900
+  - Page Background       = #210900
+  - Card Background       = #2B0D04
+  - Elevated Card         = #351207
+  - Primary Accent        = #E15F30
+  - Accent Hover          = #F26A36
+  - Primary Text          = #F8F8F8
+  - Secondary Text        = #E8DED6
+  - Muted Text            = #BDAEA6
+  - Border / Divider      = #5A2412
+  - Button Background     = #E15F30
+  - Button Text           = #FFFFFF
+  - Link Text             = #F8F8F8
+  - Link Underline        = #F8F8F8
+  - Warning / Allergen    = #FFB020
+  - Danger / Not Suitable = #FF5A3D
+  - Success / Suitable    = #73C686
+  - Neutral Tag           = #E8DED6
+
+*------------------------------
+* Admin And Content Management
+*------------------------------
+  - The app should allow content to be maintained without rebuilding the whole app manually
+  - Admin needs are likely to include
+      - Add recipe
+      - Edit recipe
+      - Add wine
+      - Edit wine
+      - Add food item
+      - Edit food item
+      - Update allergen tags
+      - Update availability status
+
+  - Admin access should be limited to authorised users
+  - General staff users should be able to view and search content
+  - General staff users should not accidentally edit official recipe or allergen information
+
+*-------------------------
+* Deployment Requirements
+*-------------------------
+  - Deploy the app on Vercel
+  - App should be accessible through a private or restricted link
+  - App should support mobile browser use without requiring installation
+  - App should be installable as a PWA if technically practical
+  - App should load quickly on mobile data and venue Wi-Fi
+  - App should avoid exposing private internal content to public indexing
+
+*--------------------------
+* Performance Requirements
+*--------------------------
+  - Mobile load speed should be prioritised
+  - Search and filtering should respond quickly
+  - App should not require heavy images for normal operation
+  - Core content should remain readable on slower mobile connections
+  - Data structure should support fast filtering without lag
+  - Layout should avoid unnecessary re-rendering or heavy visual effects
+
+*----------------------------
+* Data Accuracy Requirements
+*----------------------------
+  - Recipe information must be consistent and service-ready
+  - Wine notes must be understandable for staff and customers
+  - Allergen information must be treated carefully
+  - Coeliac suitability must be separately tracked from general gluten-free status
+  - Unknown allergen status should be treated as unsafe or needs confirmation
+  - Staff-facing warnings should be clear where cross-contamination risk exists
+  - Dietary filtering should not overclaim safety
+
+*-------------------
+* Food Content Draft
+*-------------------
+  - Food content source = Baja Cantina Central server bullet points and food description sheets
+  - Food entries should support short service notes, origin/region, ingredients, description, and allergen/dietary tags
+  - Current food data is a draft based on provided staff reference photos
+  - Allergen and coeliac fields still require confirmation before production use
+
+*-------------------------
+* Food Categories Draft
+*-------------------------
+  - Antojitos
+  - Botanas
+  - Fajitas
+  - Classics
+  - Prima
+  - Tacos
+  - Taco Filling
+  - Mains
+  - Desserts
+
+*----------------------
+* Food Items - Antojitos
+*----------------------
+  - Corn Ribs
+      - Region = Mexico
+      - Description = Fried corn ribs with chipotle powder and macha oil
+      - Served With = Ricotta and coriander, chipotle mayo on the side
+      - Staff Note = Recently introduced menu item from Mexico
+      - Venue Availability = 3 shops
+
+  - Beef Taquitos
+      - Region = Northern Mexico
+      - Description = Crispy fried corn tortillas filled with slow-cooked beef
+      - Finished With = Chipotle salsa and ricotta
+      - Staff Note = Hand-rolled crispy fried tortillas filled with beef and queso cream
+      - Venue Availability = 3 shops
+
+  - Quesadilla Fritas
+      - Region = Central Mexico
+      - Description = Fried masa dough with rajas, cheese, and cream
+      - Finished With = Macha oil
+      - Staff Note = Fried masa dough stuffed with rajas and cheese, placed on homemade salsa
+      - Venue Availability = 3 shops
+
+  - Quesadilla Fritas - Chorizo And Potatoes
+      - Region = Central Mexico
+      - Description = Fried blue-masa dough with chorizo and potato
+      - Finished With = Cheese and chilli oil
+
+  - Chicken Flautas
+      - Region = Mexico City
+      - Description = Rolled crispy fried tortillas filled with chicken on salsa verde
+      - Topped With = Lettuce, cream, and Mexican cheese
+      - Staff Note = Two corn rolls stuffed with chicken, deep fried, and placed on salsa verde
+      - Venue Availability = Glebe and Central
+
+  - Cajun Chicken Wings
+      - Region = Louisiana, USA
+      - Description = Cajun-spiced wings glazed with BBQ chipotle
+      - Served With = Ranch sauce on the side
+      - Venue Availability = Central and Glebe
+
+  - Tuna Tartare
+      - Region = Baja California
+      - Description = Fresh ruby tuna with chilli oil, lime, and seared corn
+      - Served With = Crispy corn tostada
+      - Venue Availability = Bourke and Central
+
+  - Ceviche Tostadas
+      - Region = Baja California
+      - Description = Citrus-marinated seafood with smashed avocado
+      - Served With = Crisp corn tostadas
+      - Staff Note = Salmon and tuna are citrus-marinated and placed on freshly smashed avocado with crispy fried corn tostadas
+      - Venue Availability = Central and Glebe
+
+*-------------------
+* Food Items - Botanas
+*-------------------
+  - Burrata
+      - Region = Italian cheese with Mexican influence
+      - Description = Creamy burrata with sugar-cane vinegar reduction
+      - Finished With = Macha and corn chips
+      - Secondary Description = Macha and fresh coriander
+      - Venue Availability = 3 shops
+
+  - Chips And Salsa
+      - Region = Mexico
+      - Description = House-fried corn chips
+      - Served With = Fresh tomato salsa
+      - Venue Availability = 3 shops
+
+  - Chips And Guacamole
+      - Description = Corn chips with guacamole
+      - Secondary Description = Guacamole, tomato, onion, coriander, lime juice
+      - Venue Availability = 3 shops
+
+  - Chips And Queso
+      - Description = Corn chips and guacamole / queso reference requires confirmation
+      - Secondary Description = Corn chips and guacamole reference visible in provided sheet
+
+  - Mixed Dips
+      - Region = Mexico
+      - Description = Guacamole, queso, and salsa fresca
+      - Staff Note = Ideal for sharing
+      - Venue Availability = 3 shops
+
+  - Baja Nachos
+      - Region = Baja California
+      - Description = Corn chips layered with beans and cheese
+      - Finished With = Guacamole, jalapenos, and sour cream
+      - Venue Availability = 3 shops
+
+*------------------
+* Food Items - Fajitas
+*------------------
+  - Vegetarian Fajitas
+      - Region = Northern Mexico / Tex-Mex
+      - Description = Sizzling pan with sauteed capsicum and onions
+      - Served With = Side tortillas and side plate with guacamole, sour cream, and other sides
+      - Venue Availability = 3 shops
+
+  - Chicken Breast Fajitas
+      - Region = Northern Mexico / Tex-Mex
+      - Description = Sizzling pan with marinated chicken cubes, capsicum, and onions
+      - Served With = Side tortillas and side plate with guacamole, sour cream, and other sides
+      - Venue Availability = 3 shops
+
+  - Skirt Steak Fajitas
+      - Region = Northern Mexico
+      - Description = Grilled skirt steak on sauteed capsicum and onions in a sizzling pan
+      - Served With = Side tortillas and side plate with guacamole, sour cream, and other sides
+
+  - Prawn Fajitas
+      - Region = Baja California
+      - Description = Sizzling pan with chipotle prawns, capsicum, and onion
+      - Served With = Side tortilla and side plate with guacamole, sour cream, and other sides
+      - Venue Availability = 3 shops
+
+  - Wagyu Striploin Fajitas
+      - Region = Northern Mexico
+      - Description = Premium Wagyu striploin on sizzling pan
+      - Served With = Side tortilla and side plate with guacamole, sour cream, and other sides
+      - Staff Note = Served on sauteed capsicum and onions in a sizzling pan with tortillas to fill yourself
+
+*-------------------
+* Food Items - Classics
+*-------------------
+  - Enchilada
+      - Region = Central Mexico
+      - Description = Corn tortillas filled with choice of protein
+      - Finished With = Enchilada sauce and drizzled sour cream
+      - Venue Availability = 3 shops
+
+  - Quesadilla
+      - Region = Mexico
+      - Description = Served in flour or corn tortilla
+      - Filling = Melted cheese with choice of filling
+      - Venue Availability = 3 shops
+
+  - Quesadilla Fritas Rajas
+      - Description = Rajas fried corn masa filling with mozzarella, lettuce, cream, macha oil, and queso fresco
+      - Secondary Description = Quesadilla rajas, queso fresco, homemade salsa
+      - Venue Availability = 3 shops
+
+  - Quesadilla Fritas Chorizo And Potato
+      - Description = Deep fried blue corn masa filling with chorizo, potato, mozzarella, lettuce, cream, macha oil, and queso fresco
+      - Secondary Description = Potato and chorizo filling, quesadilla salsa, lettuce, cream, guacamole pickle onion
+      - Venue Availability = 3 shops
+
+  - Chimichanga
+      - Region = Northern Mexico
+      - Description = Crispy fried flour tortilla with protein of choice
+      - Finished With = Pico de gallo, side guacamole, and salad
+      - Venue Availability = 3 shops
+
+  - Suiza
+      - Region = Mexico City
+      - Description = Enchiladas filled with protein of choice, topped with creamy green salsa
+      - Finished With = Baked cheese until rich
+      - Staff Note = Chicken Suiza example uses three enchiladas stuffed with chicken, topped with freshly cooked creamy green salsa, baked cheese, and drizzled cream
+      - Venue Availability = 3 shops
+
+  - California Burrito
+      - Region = California, USA
+      - Description = Carne asada with fries in a flour tortilla
+      - Served With = Fresh guacamole and side salad
+      - Staff Note = Flour tortilla stuffed with carne asada and French fries
+      - Venue Availability = 3 shops
+
+*----------------
+* Food Items - Prima
+*----------------
+  - Grilled Chipotle King Prawns
+      - Region = Baja California
+      - Description = Flame-grilled king prawns with chipotle salsa
+      - Finished With = Chilli oil and lime
+      - Secondary Description = U8 king prawns, chipotle mayo, grilled, lime, and chipotle mayo
+      - Venue Availability = 3 shops
+
+  - Burrito Gobernadora
+      - Region = Sinaloa
+      - Description = King prawns with avocado mousse, mozzarella, and beans
+      - Served In = Warm flour tortilla
+      - Staff Note = Flour tortilla stuffed with smashed beans, king prawn mix, avocado mousse, and mozzarella, served with fresh guacamole and side salad
+      - Secondary Description = Burrito, salad, and guac
+      - Venue Availability = 3 shops
+
+  - Birria Lamb Shank
+      - Region = Jalisco
+      - Description = Slow-braised lamb in rich birria broth
+      - Served With = Rice, beans, and tortillas
+      - Venue Availability = Central
+
+*----------------
+* Food Items - Tacos
+*----------------
+  - Rajas Taco
+      - Region = Central Mexico
+      - Description = Capsicum with onion, corn, and cream
+      - Served On = Soft corn tortillas
+      - Venue Availability = 3 shops
+
+  - Baja Cauliflower Taco
+      - Region = Baja California
+      - Description = Crispy battered cauliflower with chipotle mayo and cabbage
+      - Finished With = Fresh coriander and pico de gallo
+      - Staff Note = Served on flour tortillas with chipotle mayo and cabbage
+      - Venue Availability = 3 shops
+
+  - Baja Fish / Prawn Taco
+      - Region = Baja California
+      - Description = Beer-battered fish or prawns
+      - Fish Detail = Gurnard from New Zealand
+      - Served With = Cabbage, pico de gallo, and chipotle mayo
+      - Venue Availability = 3 shops
+
+  - Wagyu Rib Eye Taco
+      - Region = Northern Mexico
+      - Description = Cheese crust tortilla with guacamole on top
+      - Topped With = Grilled Wagyu ribeye and house salsa on the side
+      - Venue Availability = 3 shops
+
+  - Carnitas Taco
+      - Region = Michoacan
+      - Description = Slow-cooked pork containing orange and dairy, on corn tortillas
+      - Finished With = Salsa chipotle and pico de gallo
+      - Venue Availability = 3 shops
+
+  - Morita Beef Taco
+      - Region = Northern Mexico
+      - Description = Beef braised with smoky Morita chilli on corn tortillas
+      - Finished With = Salsa chipotle and pico de gallo
+      - Venue Availability = 3 shops
+
+  - Chicken Tinga Taco
+      - Region = Puebla
+      - Description = Shredded chicken on corn tortillas
+      - Topped With = Pico de gallo and chipotle salsa
+      - Venue Availability = 3 shops
+
+*--------------------------
+* Taco Filling Content Draft
+*--------------------------
+  - Carnitas
+      - Description = Pork shoulder, slow cooked with oranges and condensed milk
+      - Secondary Description = Pork chilli condiments
+      - Venue Availability = 3 shops
+
+  - Beef
+      - Description = Chuck beef marinated mix, seasoning, and Morita chilli
+      - Venue Availability = 3 shops
+
+  - Chicken
+      - Description = Tinga chicken, tomato chipotle and onion, chicken thigh
+      - Venue Availability = 3 shops
+
+  - Chorizo
+      - Description = Chorizo main ingredient mix with chilli and spices
+      - Secondary Description = Rodriguez chorizo, pork chillis condiments
+      - Venue Availability = 3 shops
+
+  - Steak
+      - Description = Flank steak marinated in soy, garlic, and chilli powder
+      - Venue Availability = 3 shops
+
+  - Rajas
+      - Description = Sauteed green capsicum, onion, corn with cream
+      - Secondary Description = Sauteed onion, rajas, corn, cream
+      - Venue Availability = 3 shops
+
+*------------------
+* Food Items - Mains
+*------------------
+  - Suiza Main
+      - Description = Corn tortilla, creamy green salsa, cheese
+      - Secondary Description = Green salsa, corn tortilla, cream
+      - Venue Availability = 3 shops
+
+  - Chicken Flautas Main
+      - Description = Large corn tortilla deep fried, filling with chicken, served over green salsa, lettuce, cream, and queso fresco
+      - Secondary Description = Chicken flautas, green salsa, queso fresco, lettuce
+      - Venue Availability = Glebe and Central
+
+  - Beef Taquitos Main
+      - Description = Deep fried corn tortilla filled with beef, queso sauce, lettuce, chipotle, sour cream, and queso fresco
+      - Secondary Description = Deep fried three-piece corn tortilla beef and cheese, chipotle sauce, lettuce
+      - Venue Availability = 3 shops
+
+  - Fajitas Main
+      - Description = Fajita style, mixed capsicum, onion, chipotle sauce, and protein
+      - Secondary Description = Three tortillas, guacamole, cream, cheese, lettuce, and sauce
+      - Venue Availability = 3 shops
+
+  - California Burrito Main
+      - Description = Flour tortilla, fries, chipotle salsa, cream cheese, and steak
+      - Secondary Description = Burrito, salad, and guac
+      - Venue Availability = 3 shops
+
+  - Chimichanga Main
+      - Description = Deep fried flour tortilla filling preference, beans, rice, chipotle sauce, Mexican cheese, served with salad and guac
+      - Secondary Description = Deep fried tortilla filling, guac, salad
+      - Venue Availability = 3 shops
+
+  - Chicken Wings
+      - Description = Marinated in Cajun, chipotle BBQ sauce, ranch dressing
+      - Secondary Description = Chicken wings, BBQ sauce, chipotle, ranch dressing
+      - Venue Availability = Central and Glebe
+
+*--------------------
+* Food Items - Dessert
+*--------------------
+  - Churros
+      - Description = Traditional dessert served with chocolate
+      - Secondary Description = Soft and warm inside, crispy skin with cinnamon and sugar taste
+      - Venue Availability = 3 shops
+
+  - Mexican Flan
+      - Description = Mexican flan, eggs, condensed milk, evaporated milk, caramel
+      - Venue Availability = 3 shops
+
+  - Chocolate Tart
+      - Description = Chocolate tart, chocolate ganache, nuts praline, baileys cream
+      - Secondary Description = Chocolate tart, baileys, praline cream
+      - Venue Availability = 3 shops
+
+*----------------------------
+* Food Allergen Draft Notes
+*----------------------------
+  - Gluten indicators found in current food data
+      - Flour tortilla
+      - Beer batter
+      - Churros
+      - Chocolate tart if pastry base contains gluten
+
+  - Dairy indicators found in current food data
+      - Cheese
+      - Cream
+      - Sour cream
+      - Ricotta
+      - Queso
+      - Burrata
+      - Mozzarella
+      - Condensed milk
+      - Evaporated milk
+      - Ranch dressing
+      - Chipotle mayo if dairy or egg-based recipe requires confirmation
+
+  - Egg indicators found in current food data
+      - Mexican flan
+      - Mayo-based sauces may contain egg and require confirmation
+
+  - Seafood indicators found in current food data
+      - Tuna tartare
+      - Ceviche tostadas
+      - Prawn ceviche
+      - Prawn fajitas
+      - Grilled chipotle king prawns
+      - Burrito Gobernadora
+      - Baja Fish / Prawn Taco
+
+  - Nut indicators found in current food data
+      - Chocolate tart includes nuts praline
+
+  - Coeliac safety cannot be assumed from corn-based items
+  - Coeliac suitability requires kitchen cross-contamination confirmation
+  - Any item with flour tortilla, beer batter, pastry, or uncertain fryer cross-contact should not be marked coeliac suitable without confirmation
+
+*--------------------
+* Drink Content Draft
+*--------------------
+  - Drink content source = provided wine, cocktail, beer, mezcal, tequila, and dessert drink reference sheets
+  - Drink entries should support category, taste profile, region, grape or base spirit, body, acidity, and staff selling notes
+  - Current drink data is a draft based on provided staff reference photos
+  - Pregnant guest guidance should be handled carefully and should not imply that alcoholic drinks are safe for pregnancy
+
+*----------------------------
+* Wine Service Notes Draft
+*----------------------------
+  - Standard Wine Pour = 150ml
+  - Red wines can be described by tannin
+  - White and rose wines can usually be described without focusing on tannin
+  - High-tannin wines on the current list include both Malbecs and the Azara Carmenere
+  - For high-tannin wines, staff should suggest protein-rich foods
+  - Example Pairings = Wagyu Rib Eye Tacos, Skirt Steak Fajitas
+
+*----------------------------
+* Wine Region Notes Draft
+*----------------------------
+  - Clare Valley, South Australia
+      - Description = Cool inland valley famous for world-class Riesling and elegant aromatic wines with vibrant acidity
+
+  - Marlborough, New Zealand
+      - Description = New Zealand's largest wine region, globally known for intensely aromatic, crisp Sauvignon Blanc and fresh fruit-driven whites
+
+  - Valencia, Spain
+      - Description = Warm Mediterranean region producing expressive local varieties like Bobal, plus fresh coastal whites and smooth juicy reds
+
+  - Adelaide Hills, South Australia
+      - Description = Cool-climate elevated area known for refined high-acidity wines such as Gruner Veltliner, Chardonnay, Sauvignon Blanc, and Pinot Noir
+
+  - South Africa
+      - Description = Diverse wine country balancing Old-World structure and New-World fruit, especially known for Chenin Blanc and Cabernet-based reds
+
+  - Margaret River, Western Australia
+      - Description = Premium coastal region producing elegant high-quality Chardonnay and Bordeaux-style reds with purity and freshness
+
+  - Yarra Valley, Victoria
+      - Description = Cool and misty region known for refined lighter-bodied Pinot Noir, Chardonnay, and sparkling wine
+
+  - Mendoza, Argentina
+      - Description = High-altitude Andean vineyards producing powerful ripe Malbec with great colour, structure, and concentration
+
+  - Uco Valley, Argentina
+      - Description = Very high-altitude part of Mendoza making some of Argentina's most elegant mineral and complex Malbecs
+
+  - Chile
+      - Description = Long narrow wine country between ocean and Andes, known for rich spicy reds like Carmenere and structured Cabernets
+
+*-----------------------
+* Wine Items - White Wine
+*-----------------------
+  - Atlas Watervale Riesling
+      - Region = Clare Valley, South Australia
+      - Grape = Riesling
+      - Smell = Lime
+      - Taste = Zesty
+      - Body = Light
+      - Acidity = Very High
+
+  - Nambucca Sauvignon Blanc
+      - Region = Marlborough, New Zealand
+      - Grape = Sauvignon Blanc
+      - Smell = Gooseberry
+      - Taste = Crisp
+      - Body = Light
+      - Acidity = High
+
+  - Aranleon Blanco
+      - Region = Valencia, Spain
+      - Grape = Spanish blend
+      - Smell = Citrus
+      - Taste = Smooth
+      - Body = Medium-Light
+      - Acidity = High
+
+  - Nova Vita Gruner Veltliner
+      - Region = Adelaide Hills, South Australia
+      - Grape = Gruner Veltliner
+      - Smell = Pear
+      - Taste = Spicy
+      - Body = Medium
+      - Acidity = Medium-High
+
+  - Tohu Pinot Gris
+      - Region = Marlborough, New Zealand
+      - Grape = Pinot Gris
+      - Smell = Pear
+      - Taste = Soft
+      - Body = Medium
+      - Acidity = Medium
+
+  - The Den Chenin Blanc
+      - Region = South Africa
+      - Grape = Chenin Blanc
+      - Smell = Honey
+      - Taste = Juicy
+      - Body = Medium-Full
+      - Acidity = Medium
+
+  - Flame Tree Embers Chardonnay
+      - Region = Margaret River, Western Australia
+      - Grape = Chardonnay
+      - Smell = Peach
+      - Taste = Creamy
+      - Body = Full
+      - Acidity = Medium-Low
+
+*------------------
+* Wine Items - Rose
+*------------------
+  - Atlas Rose
+      - Region = Clare Valley, South Australia
+      - Grape = Rose blend
+      - Smell = Strawberry
+      - Taste = Dry
+      - Body = Light
+      - Acidity = High
+
+  - Andeluna Malbec Rose
+      - Region = Mendoza, Argentina
+      - Grape = Malbec
+      - Smell = Berry
+      - Taste = Juicy
+      - Body = Medium-Full
+      - Acidity = Medium
+
+*---------------------
+* Wine Items - Red Wine
+*---------------------
+  - Ingram Rd Pinot Noir
+      - Region = Yarra Valley, Victoria
+      - Grape = Pinot Noir
+      - Smell = Cherry
+      - Taste = Silky
+      - Body = Light-Medium
+      - Acidity = High
+
+  - Nova Vita Sangiovese
+      - Region = Adelaide Hills, South Australia
+      - Grape = Sangiovese
+      - Smell = Cherry
+      - Taste = Bright
+      - Body = Medium
+      - Acidity = High
+
+  - Aranleon Bles Tinto
+      - Region = Valencia, Spain
+      - Grape = Spanish blend
+      - Smell = Plum
+      - Taste = Smooth
+      - Body = Medium-Full
+      - Acidity = Medium
+
+  - Andeluna 1300 Malbec
+      - Region = Mendoza, Argentina
+      - Grape = Malbec
+      - Smell = Blackberry
+      - Taste = Plush
+      - Body = Medium-Full
+      - Acidity = Medium
+
+  - TerraNoble Azara Carmenere
+      - Region = Chile
+      - Grape = Carmenere
+      - Smell = Chocolate
+      - Taste = Lush
+      - Body = Full
+      - Acidity = Medium-Low
+
+  - Andeluna Altitud Malbec
+      - Region = Uco Valley, Argentina
+      - Grape = Malbec
+      - Smell = Violet
+      - Taste = Powerful
+      - Body = Full+
+      - Acidity = Medium-Low
+
+  - Maxwell Spiced Mead
+      - Region = Clare Valley, South Australia
+      - Grape = Mead
+      - Smell = Honey
+      - Taste = Sweet
+      - Body = Full
+      - Acidity = Low
+
+*------------------------------
+* Cocktail Taste Profiles Draft
+*------------------------------
+  - Clasico
+      - Category = Classic Margarita
+      - Taste Profile = Tart, citrusy, sour-leaning, strong lime flavour with light sweetness from triple sec, clean and sharp
+
+  - Tommy's
+      - Category = Modern Margarita
+      - Taste Profile = Sweeter, smoother, agave-forward, natural sweetness softens the lime into a rounder flavour
+
+  - Jalapeno
+      - Category = Spicy Margarita
+      - Taste Profile = Fresh lime with noticeable jalapeno heat, bright, spicy, and zesty
+
+  - Baja's Paloma
+      - Category = Paloma
+      - Taste Profile = Refreshing, grapefruit-driven, lightly bitter with soda fizz
+
+  - Lychee Caprioska
+      - Category = Fruity Vodka Cocktail
+      - Taste Profile = Sweet lychee balanced with cranberry and lime
+
+  - Pina Colada
+      - Category = Tropical Cream Cocktail
+      - Taste Profile = Sweet, creamy, coconut-rich, dessert-like with pineapple acidity
+
+  - Mojito
+      - Category = Mint Highball
+      - Taste Profile = Minty, crisp, sparkling, lightly sweet with fresh lime
+
+*-----------------------------
+* Prima Drink Profiles Draft
+*-----------------------------
+  - Mezcal Margarita
+      - Category = Mezcal Margarita
+      - Taste Profile = Smoky, citrusy, sweetened with agave, bold but smooth
+
+  - La Patrona
+      - Category = Premium Margarita
+      - Taste Profile = Clean, smooth, balanced with refined tequila and gentle sweetness
+
+  - Brisa
+      - Category = Floral Spritz
+      - Taste Profile = Light, floral, bubbly with hibiscus and bright orange notes
+
+*--------------------------------
+* Fruit Margarita Profiles Draft
+*--------------------------------
+  - Pineapple Margarita
+      - Category = Fruit Margarita
+      - Taste Profile = Tropical, sweet-tart, juicy pineapple with lime
+
+  - Mango Margarita
+      - Category = Fruit Margarita
+      - Taste Profile = Sweet, lush, ripe mango flavour with gentle citrus
+
+  - Passion Fruit Margarita
+      - Category = Fruit Margarita
+      - Taste Profile = Tangy, vibrant, crisp, more tart than sweet
+
+  - Strawberry Margarita
+      - Category = Fruit Margarita
+      - Taste Profile = Sweet, refreshing, classic strawberry flavour
+
+  - 1800 Coconut Margarita
+      - Category = Tropical Margarita
+      - Taste Profile = Coconutty, smooth, mildly sweet with a hint of blue Curacao
+
+*-----------------------
+* Sangria Profiles Draft
+*-----------------------
+  - Red Sangria
+      - Category = Classic Sangria
+      - Taste Profile = Juicy, fruity, citrusy, soft red wine sweetness
+
+  - Sparkling Sangria
+      - Category = Bubbly Sangria
+      - Taste Profile = Bubbly, berry-forward, lightly sweet, refreshing and bright
+
+*-----------------------------
+* Mexican Beer Profiles Draft
+*-----------------------------
+  - Corona
+      - Category = Pale Lager
+      - Taste Profile = Light, crisp, slightly sweet, easy drinking
+
+  - Sol
+      - Category = Pale Lager
+      - Taste Profile = Very light, smooth, softer than Corona
+
+  - Modelo Especial
+      - Category = Fuller Lager
+      - Taste Profile = Richer, maltier, smooth and flavorful
+
+  - Pacifico
+      - Category = Pale Lager
+      - Taste Profile = Clean, slightly hoppy, dry finish
+
+  - Michelada
+      - Category = Beer Cocktail
+      - Taste Profile = Savory, spicy, tangy, lime + spice + beer
+
+*----------------------
+* Mezcal Profiles Draft
+*----------------------
+  - Monte Alban
+      - Category = Mezcal
+      - Taste Profile = Smoky, earthy, rustic agave flavor
+
+  - 400 Conejos
+      - Category = Mezcal
+      - Taste Profile = Smooth, balanced, gentle smoke, approachable
+
+  - Scorpion Mezcal
+      - Category = Mezcal
+      - Taste Profile = Bold, intense smoke, powerful flavor
+
+*------------------------------
+* Tequila Exclusivo Draft
+*------------------------------
+  - 1800 Cristalino
+      - Category = Cristalino Anejo
+      - Taste Profile = Clean, velvety, hints of vanilla and mineral
+
+  - Herradura Legend Anejo
+      - Category = Anejo
+      - Taste Profile = Rich, woody, caramel, deep aged flavor
+
+  - Jose Cuervo Reserva De La Familia
+      - Category = Extra Anejo
+      - Taste Profile = Complex, warm spices, vanilla, elegant and refined
+
+  - Don Julio 1942
+      - Category = Anejo
+      - Taste Profile = Silky, sweet, caramel-vanilla, dessert-like
+
+*-------------------------------
+* Dessert Drink Content Draft
+*-------------------------------
+  - Corn Cheesecake
+      - Description = Corn cheesecake, cream cheese, fresh corn, condensed milk, candy popcorn
+      - Secondary Description = Burnt corn cheesecake, candy popcorn
+      - Venue Availability = Central
+
+  - Mango Sorbet
+      - Description = Mango granita, fresh mango, hibiscus, and chamoy
+      - Secondary Description = Seasonal mango granita, diced fresh mango, chamoy, and tajin chilli powder
+      - Venue Availability = Bourke
+
+  - Paleta
+      - Description = Mixed paletas, pop cycles, seasonal fruit
+      - Secondary Description = Paleta, seasonal fruit
+      - Venue Availability = Glebe
+
+*----------------------------
+* Drink Example Phrases Draft
+*----------------------------
+  - This Sauvignon Blanc is crisp and citrus-driven, great with seafood.
+  - Our Malbec is full-bodied with dark fruit and a smooth finish.
+  - If you prefer something lighter, I'd recommend...
+
+*-------------------------------
+* Cocktail Recipe Items Draft
+*-------------------------------
+  - Cocktail content source = provided bar recipe photos from staff recipe wall
+  - Measurements are recorded in ml where visible
+  - Items with unclear or partially blocked measurements should be marked Requires Confirmation
+  - Default method should be added later for each cocktail if not visible in source photo
+  - Salt rim, Tajin rim, garnish, top-up, and blend instructions should be stored as separate recipe fields
+
+  - Classic Margarita
+      - Category = Classic Margarita
+      - Ingredients = Cazadores Blanco, Triple Sec, Lime Juice
+      - Measurements = 40ml Cazadores Blanco; 30ml Triple Sec; 30ml Lime Juice
+      - Rim = Salt rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Tart, citrusy, sour-leaning, strong lime flavour with light sweetness from triple sec, clean and sharp
+
+  - Tommy's Margarita
+      - Category = Modern Margarita
+      - Ingredients = El Jimador Blanco, Triple Sec, Lime Juice, Agave
+      - Measurements = 40ml El Jimador Blanco; 30ml Triple Sec; 30ml Lime Juice; Agave
+      - Rim = Salt rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Sweeter, smoother, agave-forward, natural sweetness softens the lime into a rounder flavour
+
+  - Jalapeno Margarita
+      - Category = Spicy Margarita
+      - Ingredients = El Jimador Reposado, Triple Sec, Lime Juice, Spicy Sauce
+      - Measurements = 40ml El Jimador Reposado; 30ml Triple Sec; 30ml Lime Juice; Spicy Sauce
+      - Rim = Tajin rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Fresh lime with noticeable jalapeno heat, bright, spicy, and zesty
+
+  - Mezcal Margarita
+      - Category = Mezcal Margarita
+      - Ingredients = Monte Alban, Cointreau, Lime Juice, Agave
+      - Measurements = 30ml Monte Alban; 30ml Cointreau; 30ml Lime Juice; Agave
+      - Rim = Salt rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Smoky, citrusy, sweetened with agave, bold but smooth
+
+  - La Patrona
+      - Category = Premium Margarita
+      - Ingredients = Patron Silver, Cointreau, Lime Juice, Agave
+      - Measurements = 40ml Patron Silver; 30ml Cointreau; 30ml Lime Juice; Agave
+      - Rim = Salt rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Clean, smooth, balanced with refined tequila and gentle sweetness
+
+  - Pineapple Margarita
+      - Category = Fruit Margarita
+      - Ingredients = El Jimador Reposado, Triple Sec, Lime Juice, Pineapple Juice, Agave
+      - Measurements = 40ml El Jimador Reposado; 30ml Triple Sec; 30ml Lime Juice; Pineapple Juice requires confirmation; Agave
+      - Rim = Salt rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Tropical, sweet-tart, juicy pineapple with lime
+
+  - Passion Fruit Margarita
+      - Category = Fruit Margarita
+      - Ingredients = El Jimador Reposado, De Kuyper Passion Fruit, Lime Juice, Agave
+      - Measurements = 40ml El Jimador Reposado; 30ml De Kuyper Passion Fruit; 30ml Lime Juice; Agave
+      - Rim = Salt rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Tangy, vibrant, crisp, more tart than sweet
+
+  - Strawberry Margarita
+      - Category = Frozen Fruit Margarita
+      - Ingredients = El Jimador Reposado, Lime Juice, De Kuyper Strawberry, Frozen Strawberries, Agave
+      - Measurements = 40ml El Jimador Reposado; 30ml Lime Juice; 30ml De Kuyper Strawberry; 4-5 Frozen Strawberries; Agave
+      - Rim = Salt rim
+      - Method = Blend with ice
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Sweet, refreshing, classic strawberry flavour
+
+  - Mango Margarita
+      - Category = Frozen Fruit Margarita
+      - Ingredients = El Jimador Reposado, Lime Juice, De Kuyper Mango, Frozen Mango, Agave
+      - Measurements = 40ml El Jimador Reposado; 30ml Lime Juice; 30ml De Kuyper Mango; 4-6 Frozen Mango; Agave
+      - Rim = Salt rim
+      - Method = Blend with ice
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Sweet, lush, ripe mango flavour with gentle citrus
+
+  - Raspberry Margarita
+      - Category = Frozen Fruit Margarita
+      - Ingredients = Cazadores Blanco, Lime Juice, De Kuyper Triple Sec, Frozen Raspberries, Agave
+      - Measurements = Base spirit measurement requires confirmation; Lime juice measurement requires confirmation; De Kuyper Triple Sec measurement requires confirmation; 3-4 Frozen Raspberries; Agave
+      - Rim = Salt rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Requires Confirmation
+
+  - Lychee Caprioska
+      - Category = Fruity Vodka Cocktail
+      - Ingredients = Vodka, Lychee, Cranberry Juice, Lychee Syrup, Syrup, Lime
+      - Measurements = 30ml Vodka; Lychee measurement requires confirmation; 30ml Cranberry Juice; 10ml Lychee Syrup; 15ml Syrup; 15ml Lime
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Lychee
+      - Taste Profile = Sweet lychee balanced with cranberry and lime
+
+  - Pina Colada
+      - Category = Frozen Tropical Cream Cocktail
+      - Ingredients = Malibu, Pineapple Juice, Lime, Frozen Coconut Cream, Agave
+      - Measurements = 60ml Malibu; 45ml Pineapple Juice; 15ml Lime; 2 cubes Frozen Coconut Cream; Agave
+      - Method = Blend with ice
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Sweet, creamy, coconut-rich, dessert-like with pineapple acidity
+
+  - Mojito
+      - Category = Mint Highball
+      - Ingredients = Bacardi, Lime Juice, Syrup, Mint Leaves, Soda, Lemonade
+      - Measurements = 45ml Bacardi; 30ml Lime Juice; 30ml Syrup; muddled mint leaves; top with half soda + half lemonade
+      - Method = Muddle mint leaves; fill glass with ice; top with half soda and half lemonade
+      - Glassware = Requires Confirmation
+      - Garnish = Mint leaves
+      - Taste Profile = Minty, crisp, sparkling, lightly sweet with fresh lime
+
+  - Strawberry Daiquiri
+      - Category = Frozen Daiquiri
+      - Ingredients = Captain Morgan, De Kuyper Strawberry, Pineapple Juice, Lime Juice, Frozen Strawberry, Agave
+      - Measurements = 40ml Captain Morgan; 30ml De Kuyper Strawberry; 30ml Pineapple Juice; 15ml Lime Juice; 3-4 Frozen Strawberry; Agave
+      - Method = Blend with ice
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Requires Confirmation
+
+  - Paloma
+      - Category = Paloma
+      - Ingredients = El Jimador Blanco, Grapefruit Cordial, Lime Juice, Salt, Agrum
+      - Measurements = 40ml El Jimador Blanco; 20ml Grapefruit Cordial; 20ml Lime Juice; pinch salt; top up with Agrum
+      - Rim = Half salt rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Refreshing, grapefruit-driven, lightly bitter with soda fizz
+
+  - Brisa
+      - Category = Floral Spritz
+      - Ingredients = Hibiscus, Orange Juice, Prosecco
+      - Measurements = 20ml Hibiscus; 20ml Orange Juice; top up with Prosecco
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Light, floral, bubbly with hibiscus and bright orange notes
+
+  - Limoncello Spritz
+      - Category = Spritz
+      - Ingredients = Limoncello, Prosecco, Soda
+      - Measurements = 60ml Limoncello; 60ml Prosecco; 60ml Soda
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Dry lemon garnish
+      - Taste Profile = Requires Confirmation
+
+  - Aperol Spritz
+      - Category = Spritz
+      - Ingredients = Aperol, Prosecco, Soda
+      - Measurements = 60ml Aperol; 60ml Prosecco; 60ml Soda
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Orange garnish
+      - Taste Profile = Requires Confirmation
+
+  - Tequila Sour
+      - Category = Sour
+      - Ingredients = El Jimador Anejo, Lime Juice, Syrup, Foamer, Grenadine
+      - Measurements = 40ml El Jimador Anejo; 30ml Lime Juice; 15ml Syrup; 2-3 drops foamer; 5ml Grenadine
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Requires Confirmation
+
+  - Mexican Punch
+      - Category = Punch
+      - Ingredients = El Jimador Blanco, Liquor 43, Pineapple Juice, Passion Fruit Cube, Agave, Bitters
+      - Measurements = 40ml El Jimador Blanco; 30ml Liquor 43; 30ml Pineapple Juice; 2 passion fruit cubes; dash agave; 2-3 dashes bitters
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Requires Confirmation
+
+  - Michelada
+      - Category = Beer Cocktail
+      - Ingredients = Clamato, Lime, Maggi, Worcestershire Sauce, Tabasco, Tajin
+      - Measurements = 60ml Clamato; 15ml Lime; 2-3 drops Maggi; 2-3 drops Worcestershire Sauce; 2-3 drops Tabasco
+      - Rim = Tajin rim
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Savory, spicy, tangy, lime + spice + beer
+      - Prebatch Note = Prebatch 120ml; 30ml lime; half spoon salt; Tajin rim
+
+  - Elderflower
+      - Category = Spritz / Highball
+      - Ingredients = Elderflower Syrup, Lime Juice, Strawberry, Soda
+      - Measurements = 30ml Elderflower Syrup; 20ml Lime Juice; strawberry; soda top up
+      - Method = Build with crushed ice
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+      - Taste Profile = Requires Confirmation
+
+*--------------------------------------
+* Non-Alcoholic Cocktail Recipes Draft
+*--------------------------------------
+  - Virgin Pina Colada
+      - Category = Non-Alcoholic Frozen Tropical Drink
+      - Ingredients = Pineapple Juice, Lime Juice, Coconut Cream, Agave
+      - Measurements = 90ml Pineapple Juice; 15ml Lime Juice; 3 cubes Coconut Cream; Agave
+      - Method = Blend with ice
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+
+  - Virgin Mojito
+      - Category = Non-Alcoholic Mint Highball
+      - Ingredients = Mint Leaves, Lime, Syrup, Lemonade, Soda Water
+      - Measurements = Muddled mint leaves; 30ml Lime; 30ml Syrup; top with more lemonade less soda water
+      - Method = Muddle mint leaves; fill glass with ice; top with lemonade and soda water
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+
+  - Virgin Strawberry Daiquiri
+      - Category = Non-Alcoholic Frozen Fruit Drink
+      - Ingredients = Pineapple Juice, Lime Juice, Strawberries, Agave
+      - Measurements = 60ml Pineapple Juice; 15ml Lime Juice; 4-5 Strawberries; Agave
+      - Method = Blend with ice
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+
+*----------------------------
+* Sangria Recipe Draft
+*----------------------------
+  - Sparkling Sangria Glass
+      - Category = Sparkling Sangria
+      - Ingredients = Pineapple Juice, Syrup, Limoncello, De Kuyper Strawberry, Lime, Frozen Mixed Berries, Ice, Markview Brut Cuvee
+      - Measurements = 15ml Pineapple Juice; 15ml Syrup; 15ml Limoncello; 10ml De Kuyper Strawberry; 10ml Lime; frozen mixed berries; few cubes of ice; fill with Markview Brut Cuvee
+      - Method = Requires Confirmation
+      - Glassware = Requires Confirmation
+      - Garnish = Requires Confirmation
+
+  - Sparkling Sangria Jug
+      - Category = Sparkling Sangria Jug
+      - Ingredients = Pineapple Juice, Syrup, Limoncello, De Kuyper Strawberry, Lime Juice, Frozen Berries, Markview Brut Cuvee
+      - Measurements = 120ml Pineapple Juice; 60ml Syrup; 60ml Limoncello; 60ml De Kuyper Strawberry; 30ml Lime Juice; frozen berries; 1.5 scoops ice; fill with Markview Brut Cuvee
+      - Method = Requires Confirmation
+      - Glassware = Jug
+      - Garnish = Requires Confirmation
+
+*-----------------------------------
+* Allergy Matrix Requirements Draft
+*-----------------------------------
+  - Allergy matrix source = provided Baja Cantina allergy matrix and banquet allergy replacement sheets
+  - The app should model allergens as structured fields for each menu item
+  - The app should show whether an item contains an allergen, can be modified, or has a recommended replacement
+  - Matrix colour logic should be represented in data rather than relying only on colour
+  - Status values should include Safe, Contains, Modification Available, Not Suitable, May Contain, Requires Confirmation
+  - The app should not use colour alone for allergen safety; text labels are required
+  - Banquet allergy replacements should be searchable and available as a separate staff reference mode
+
+*------------------------------
+* Allergy Matrix Fields Draft
+*------------------------------
+  - Food Item
+  - Section
+  - Meat
+  - Seafood
+  - Crustacean
+  - Sulphites
+  - Vegetarian
+  - Vegan
+  - Gluten
+  - Sesame
+  - Tree Nuts
+  - Dairy
+  - Raw
+  - Onion Family
+  - Chilli
+  - Egg
+  - Soy
+  - MSG
+  - Coriander
+  - Modification Notes
+  - Replacement Suggestion
+  - Coeliac Suitability
+  - Cross Contamination Risk
+  - Requires Manager Confirmation
+
+*--------------------------------------
+* Allergy Replacement Rules Draft
+*--------------------------------------
+  - Mix Dips
+      - Vegan Issue = Requires replacement or removal
+      - Sesame Modification = No macha sauce
+      - Dairy Replacement = Wings 3 pieces where visible in provided sheet
+      - Chilli Modification = No salsa fresca; no macha sauce
+      - Coriander Replacement = Tuna tostada or no coriander depending banquet sheet context
+
+  - Burrata
+      - Sesame Modification = No macha sauce
+      - Replacement Suggestion = Tuna tartare where visible in Suprema sheet
+
+  - Corn Ribs
+      - Sesame Modification = No macha sauce
+      - Chilli Modification = No macha, no chipotle where visible
+
+  - Ceviche / Tuna
+      - Vegetarian Replacement = Rajas quesadilla frita / rajas option where visible
+      - Raw Replacement = Rajas quesadilla frita / rajas option where visible
+      - Chilli Modification = No chilli
+      - Coriander Modification = No coriander
+
+  - Wagyu Taco
+      - Meat Replacement = Cauliflower or Baja where visible
+      - Vegetarian Replacement = Cauliflower / Baja option where visible
+      - Gluten Replacement = Corn tortilla
+      - Dairy Modification = No cheese
+      - Raw Modification = Well done
+      - Chilli Modification = No chipotle / no salsa depending banquet sheet context
+      - Coriander Modification = No coriander / no avo mousse where visible
+
+  - Baja Fish / Prawn
+      - Seafood Replacement = Fish taco or fish alternative where visible
+      - Crustacean Replacement = Fish or cauliflower where visible
+      - Vegetarian Replacement = Cauliflower
+      - Gluten Replacement = Corn tortilla
+
+  - Grilled King Prawn
+      - Seafood Replacement = Wagyu taco where visible
+      - Crustacean Replacement = Wagyu taco where visible
+      - Vegetarian Replacement = Corn ribs or Baja cauliflower / vegetarian taco option where visible
+      - Chilli Modification = No chilli; no chipotle mayo
+
+  - Quesadilla Frita Chorizo
+      - Meat Replacement = Quesadilla prawn or veggie where visible
+      - Vegetarian Replacement = Enchilada / Suiza where visible
+      - Gluten Status = Cross-contamination requires confirmation
+      - Dairy Replacement = Beef taco where visible
+      - Chilli Replacement = Cheese quesadilla where visible
+      - Coriander Modification = No coriander
+
+  - Quesadilla Frita Rajas
+      - Gluten Status = Cross-contamination requires confirmation
+      - Dairy Replacement = Chicken taco where visible
+      - Coriander Modification = No guac where visible
+
+  - Lamb
+      - Meat Replacement = Fish / prawns where visible
+      - Vegetarian Replacement = Fajitas vegetarian where visible
+      - Dairy Replacement = Central dessert dairy free option where visible
+      - Chilli Replacement = Wagyu tacos no salsa where visible
+      - Coriander Modification = No coriander
+
+  - Churros
+      - Dairy Replacement = Flan or Mangoyada where visible
+      - Tree Nuts Status = May contain
+      - Soy Replacement = Mangoyada / Paleta where visible
+
+  - Chocolate Tart
+      - Dairy Replacement = Mangoyada where visible
+      - Tree Nuts Status = Contains or may contain nuts praline; requires confirmation
+      - Soy Replacement = Flan or alternative where visible
+
+  - Flan
+      - Dairy Replacement = Paleta where visible
+
+*--------------------------
+* Banquet Serving Draft
+*--------------------------
+  - Banquet serving source = provided banquet serving reference sheet
+  - App should include a banquet serving calculator or reference table in later version
+  - Serving calculator should support number of covers and return suggested quantity per shared item
+  - The banquet serving table includes Clasico and Suprema banquet structures
+  - Serving values need manual transcription and confirmation before production use
+  - Dessert service note = Pick one dessert, churros or flan, where visible on sheet
+  - Handwritten note visible = 1 burrata for 2 pax
+
+*----------------
+* Pending Inputs
+*----------------
+  - Final cocktail method confirmation for shake, stir, build, blend, or top-up workflow
+  - Final glassware for each cocktail
+  - Final garnish for each cocktail
+  - Final margarita fruit syrup/juice confirmation where partly blocked by photos
+  - Final wine bottle list confirmation
+  - Final beer, mezcal, and tequila availability confirmation
+  - Final food allergen confirmation for each food item
+  - Coeliac suitability details for each food item
+  - Vegan and vegetarian confirmation for each food item
+  - Brand or venue style reference
+  - Final access control preference
+  - Admin editing requirement confirmation

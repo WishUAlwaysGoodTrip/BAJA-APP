@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  /* App Background */
+  --background: #210900;
+  --page-background: #210900;
+
+  /* Cards */
+  --card-background: #2B0D04;
+  --elevated-card: #351207;
+
+  /* Primary Accent */
+  --primary-accent: #E15F30;
+  --accent-hover: #F26A36;
+
+  /* Text */
+  --primary-text: #F8F8F8;
+  --secondary-text: #E8DED6;
+  --muted-text: #BDAEA6;
+
+  /* Border */
+  --border: #5A2412;
+
+  /* Button */
+  --button-background: #E15F30;
+  --button-text: #FFFFFF;
+
+  /* Link */
+  --link-text: #F8F8F8;
+  --link-underline: #F8F8F8;
+
+  /* Status Colors */
+  --warning: #FFB020;
+  --danger: #FF5A3D;
+  --success: #73C686;
+  --neutral-tag: #E8DED6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--primary-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+}
