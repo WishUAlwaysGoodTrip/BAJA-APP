@@ -140,7 +140,7 @@ export default function SearchPage() {
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍸 Bar ({searchResults.cocktails.length})</h2>
               <div className="space-y-2">
-                {searchResults.cocktails.slice(0, 10).map((c) => (
+                {searchResults.cocktails.map((c) => (
                   <div key={c.id} className="bg-[var(--card-background)] rounded-lg border border-[var(--border)] overflow-hidden">
                     <button
                       onClick={() => setExpandedCocktail(expandedCocktail === c.id ? null : c.id)}
@@ -182,9 +182,6 @@ export default function SearchPage() {
                     )}
                   </div>
                 ))}
-                {searchResults.cocktails.length > 10 && (
-                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.cocktails.length - 10} more</p>
-                )}
               </div>
             </div>
           )}
@@ -194,7 +191,7 @@ export default function SearchPage() {
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍷 Wine ({searchResults.wines.length})</h2>
               <div className="space-y-2">
-                {searchResults.wines.slice(0, 10).map((w) => (
+                {searchResults.wines.map((w) => (
                   <div key={w.id} className="bg-[var(--card-background)] rounded-lg border border-[var(--border)] overflow-hidden">
                     <button
                       onClick={() => setExpandedWine(expandedWine === w.id ? null : w.id)}
@@ -219,9 +216,6 @@ export default function SearchPage() {
                     )}
                   </div>
                 ))}
-                {searchResults.wines.length > 10 && (
-                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.wines.length - 10} more</p>
-                )}
               </div>
             </div>
           )}
@@ -231,7 +225,7 @@ export default function SearchPage() {
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍽️ Food ({searchResults.foods.length})</h2>
               <div className="space-y-2">
-                {searchResults.foods.slice(0, 10).map((f) => (
+                {searchResults.foods.map((f) => (
                   <div key={f.id} className="bg-[var(--card-background)] rounded-lg border border-[var(--border)] overflow-hidden">
                     <button
                       onClick={() => setExpandedFood(expandedFood === f.id ? null : f.id)}
@@ -258,9 +252,6 @@ export default function SearchPage() {
                     )}
                   </div>
                 ))}
-                {searchResults.foods.length > 10 && (
-                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.foods.length - 10} more</p>
-                )}
               </div>
             </div>
           )}
