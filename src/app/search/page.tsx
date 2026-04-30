@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { cocktails } from "@/data/cocktails";
 import { wines } from "@/data/wines";
 import { foods } from "@/data/foods";
@@ -10,6 +11,7 @@ export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const router = useRouter();
 
   const searchResults = useMemo(() => {
     if (!query.trim() && activeFilters.length === 0) {
@@ -114,7 +116,7 @@ export default function SearchPage() {
         </div>
       )}
 
-      {/* Results - Clickable to go to detail pages */}
+      {/* Results - Clickable to navigate */}
       {!query && !hasFilters ? (
         <div className="text-center py-8 text-[var(--muted-text)]">
           <p>Enter a search term or select a filter</p>
@@ -125,16 +127,16 @@ export default function SearchPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Cocktails - Click to go to Bar page */}
+          {/* Cocktails */}
           {searchResults.cocktails.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍸 Bar ({searchResults.cocktails.length})</h2>
               <div className="space-y-2">
                 {searchResults.cocktails.slice(0, 10).map((c) => (
-                  <Link
+                  <div
                     key={c.id}
-                    href="/bar"
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    onClick={() => router.push("/bar")}
+                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)] cursor-pointer active:bg-[var(--elevated-card)]"
                   >
                     <span className="text-[var(--primary-text)]">{c.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{c.category}</span>
@@ -142,7 +144,7 @@ export default function SearchPage() {
                       <p className="text-xs text-[var(--secondary-text)] mt-1">{c.tasteProfile}</p>
                     )}
                     <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full recipe →</p>
-                  </Link>
+                  </div>
                 ))}
                 {searchResults.cocktails.length > 10 && (
                   <p className="text-xs text-[var(--muted-text)]">+{searchResults.cocktails.length - 10} more</p>
@@ -151,22 +153,22 @@ export default function SearchPage() {
             </div>
           )}
 
-          {/* Wines - Click to go to Wine page */}
+          {/* Wines */}
           {searchResults.wines.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍷 Wine ({searchResults.wines.length})</h2>
               <div className="space-y-2">
                 {searchResults.wines.slice(0, 10).map((w) => (
-                  <Link
+                  <div
                     key={w.id}
-                    href="/wine"
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    onClick={() => router.push("/wine")}
+                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)] cursor-pointer active:bg-[var(--elevated-card)]"
                   >
                     <span className="text-[var(--primary-text)]">{w.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{w.varietal}</span>
                     <p className="text-xs text-[var(--secondary-text)] mt-1">{w.taste}</p>
                     <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full details →</p>
-                  </Link>
+                  </div>
                 ))}
                 {searchResults.wines.length > 10 && (
                   <p className="text-xs text-[var(--muted-text)]">+{searchResults.wines.length - 10} more</p>
@@ -175,16 +177,16 @@ export default function SearchPage() {
             </div>
           )}
 
-          {/* Foods - Click to go to Food page */}
+          {/* Foods */}
           {searchResults.foods.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍽️ Food ({searchResults.foods.length})</h2>
               <div className="space-y-2">
                 {searchResults.foods.slice(0, 10).map((f) => (
-                  <Link
+                  <div
                     key={f.id}
-                    href="/food"
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    onClick={() => router.push("/food")}
+                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)] cursor-pointer active:bg-[var(--elevated-card)]"
                   >
                     <span className="text-[var(--primary-text)]">{f.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{f.category}</span>
@@ -195,7 +197,7 @@ export default function SearchPage() {
                       {f.vegetarian && !f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Veg</span>}
                     </div>
                     <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full details →</p>
-                  </Link>
+                  </div>
                 ))}
                 {searchResults.foods.length > 10 && (
                   <p className="text-xs text-[var(--muted-text)]">+{searchResults.foods.length - 10} more</p>
