@@ -42,7 +42,7 @@ export default function BottomNav() {
       </nav>
       <footer className="fixed bottom-0 left-0 right-0 bg-[var(--elevated-card)] border-t border-[var(--border)] z-50 py-2">
         <div className="text-center text-xs text-[var(--muted-text)]">
-          BAJA CANTINA RECIPE · BY YIFAN GENG · 2026
+          Baja Cantina Recipe · by Yifan Geng · 2026
         </div>
       </footer>
     </>
