@@ -4,11 +4,11 @@ export interface Cocktail {
   category: string;
   ingredients: string;
   measurements: string;
-  rim: string;
-  method: string;
-  glassware: string;
-  garnish: string;
-  tasteProfile: string;
+  rim?: string;
+  method?: string;
+  glassware?: string;
+  garnish?: string;
+  tasteProfile?: string;
   availability: string;
 }
 
@@ -149,6 +149,7 @@ export const cocktails: Cocktail[] = [
     category: "Fruity Vodka Cocktail",
     ingredients: "Vodka, Lychee, Cranberry Juice, Lychee Syrup, Syrup, Lime",
     measurements: "30ml Vodka; Lychee measurement requires confirmation; 30ml Cranberry Juice; 10ml Lychee Syrup; 15ml Syrup; 15ml Lime",
+    rim: "",
     method: "",
     glassware: "",
     garnish: "Lychee",

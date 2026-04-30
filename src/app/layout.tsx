@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--primary-text)]">
-        <main className="flex-1 pb-20 overflow-auto">
+        <main className="flex-1 pb-28 overflow-auto">
           {children}
         </main>
         <BottomNav />
