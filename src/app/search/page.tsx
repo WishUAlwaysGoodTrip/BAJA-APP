@@ -10,7 +10,6 @@ export default function SearchPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
-  // Track which item is expanded
   const [expandedCocktail, setExpandedCocktail] = useState<string | null>(null);
   const [expandedWine, setExpandedWine] = useState<string | null>(null);
   const [expandedFood, setExpandedFood] = useState<string | null>(null);
@@ -30,20 +29,23 @@ export default function SearchPage() {
     };
 
     return {
+      // Cocktails: search by name OR category (not ingredients)
       cocktails: cocktails.filter((c) => {
-        if (q && !c.name.toLowerCase().includes(q) && !c.category.toLowerCase().includes(q) && !c.ingredients.toLowerCase().includes(q)) {
+        if (q && !c.name.toLowerCase().includes(q) && !c.category.toLowerCase().includes(q)) {
           return false;
         }
         return true;
       }),
+      // Wines: search by name OR varietal (not region/type)
       wines: wines.filter((w) => {
-        if (q && !w.name.toLowerCase().includes(q) && !w.varietal.toLowerCase().includes(q) && !w.region.toLowerCase().includes(q) && !w.type.toLowerCase().includes(q)) {
+        if (q && !w.name.toLowerCase().includes(q) && !w.varietal.toLowerCase().includes(q)) {
           return false;
         }
         return true;
       }),
+      // Foods: search by name OR key ingredients
       foods: filterFoods(activeFilters)(foods.filter((f) => {
-        if (q && !f.name.toLowerCase().includes(q) && !f.category.toLowerCase().includes(q) && !f.keyIngredients.toLowerCase().includes(q) && !f.description.toLowerCase().includes(q)) {
+        if (q && !f.name.toLowerCase().includes(q) && !f.keyIngredients.toLowerCase().includes(q)) {
           return false;
         }
         return true;
@@ -61,7 +63,6 @@ export default function SearchPage() {
         <p className="text-[var(--muted-text)] text-sm">Cocktails, Wine & Food</p>
       </header>
 
-      {/* Search Input */}
       <div className="mb-4">
         <input
           type="text"
@@ -69,7 +70,6 @@ export default function SearchPage() {
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            // Clear expansions when typing new search
             setExpandedCocktail(null);
             setExpandedWine(null);
             setExpandedFood(null);
@@ -79,7 +79,6 @@ export default function SearchPage() {
         />
       </div>
 
-      {/* Quick Filters */}
       <button
         onClick={() => setShowFilters(!showFilters)}
         className={`w-full mb-3 p-2 rounded-lg border text-sm text-left flex justify-between items-center ${
@@ -124,7 +123,6 @@ export default function SearchPage() {
         </div>
       )}
 
-      {/* Results */}
       {!query && !hasFilters ? (
         <div className="text-center py-8 text-[var(--muted-text)]">
           <p>Enter a search term or select a filter</p>
@@ -135,7 +133,7 @@ export default function SearchPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Cocktails - Click to expand details */}
+          {/* Cocktails */}
           {searchResults.cocktails.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍸 Bar ({searchResults.cocktails.length})</h2>
@@ -149,7 +147,6 @@ export default function SearchPage() {
                       <span className="text-[var(--primary-text)]">{c.name}</span>
                       <span className="text-xs text-[var(--muted-text)] ml-2">{c.category}</span>
                     </button>
-                    {/* Expanded details */}
                     {expandedCocktail === c.id && (
                       <div className="px-4 pb-4 pt-2 border-t border-[var(--border)] space-y-2">
                         {c.tasteProfile && (
@@ -186,7 +183,7 @@ export default function SearchPage() {
             </div>
           )}
 
-          {/* Wines - Click to expand details */}
+          {/* Wines */}
           {searchResults.wines.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍷 Wine ({searchResults.wines.length})</h2>
@@ -220,7 +217,7 @@ export default function SearchPage() {
             </div>
           )}
 
-          {/* Foods - Click to expand details */}
+          {/* Foods */}
           {searchResults.foods.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍽️ Food ({searchResults.foods.length})</h2>
