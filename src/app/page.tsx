@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div className="p-4">
       <header className="text-center py-8">
-        <h1 className="text-3xl font-bold text-[var(--primary-text)]">BAJA</h1>
+        <h1 className="text-3xl font-bold text-[var(--primary-accent)]">BAJA CANTINA</h1>
         <p className="text-[var(--muted-text)] mt-2">Staff Reference App</p>
       </header>
 
