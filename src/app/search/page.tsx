@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { cocktails } from "@/data/cocktails";
 import { wines } from "@/data/wines";
 import { foods } from "@/data/foods";
@@ -11,7 +9,11 @@ export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
-  const router = useRouter();
+
+  // Track which item is expanded
+  const [expandedCocktail, setExpandedCocktail] = useState<string | null>(null);
+  const [expandedWine, setExpandedWine] = useState<string | null>(null);
+  const [expandedFood, setExpandedFood] = useState<string | null>(null);
 
   const searchResults = useMemo(() => {
     if (!query.trim() && activeFilters.length === 0) {
@@ -65,7 +67,13 @@ export default function SearchPage() {
           type="text"
           placeholder="Search drinks, wine, food..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            // Clear expansions when typing new search
+            setExpandedCocktail(null);
+            setExpandedWine(null);
+            setExpandedFood(null);
+          }}
           className="w-full p-3 bg-[var(--card-background)] border border-[var(--border)] rounded-lg text-[var(--primary-text)] placeholder-[var(--muted-text)] focus:outline-none focus:border-[var(--primary-accent)]"
           autoFocus
         />
@@ -116,7 +124,7 @@ export default function SearchPage() {
         </div>
       )}
 
-      {/* Results - Clickable to navigate */}
+      {/* Results */}
       {!query && !hasFilters ? (
         <div className="text-center py-8 text-[var(--muted-text)]">
           <p>Enter a search term or select a filter</p>
@@ -127,23 +135,51 @@ export default function SearchPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Cocktails */}
+          {/* Cocktails - Click to expand details */}
           {searchResults.cocktails.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍸 Bar ({searchResults.cocktails.length})</h2>
               <div className="space-y-2">
                 {searchResults.cocktails.slice(0, 10).map((c) => (
-                  <div
-                    key={c.id}
-                    onClick={() => router.push("/bar")}
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)] cursor-pointer active:bg-[var(--elevated-card)]"
-                  >
-                    <span className="text-[var(--primary-text)]">{c.name}</span>
-                    <span className="text-xs text-[var(--muted-text)] ml-2">{c.category}</span>
-                    {c.tasteProfile && (
-                      <p className="text-xs text-[var(--secondary-text)] mt-1">{c.tasteProfile}</p>
+                  <div key={c.id} className="bg-[var(--card-background)] rounded-lg border border-[var(--border)] overflow-hidden">
+                    <button
+                      onClick={() => setExpandedCocktail(expandedCocktail === c.id ? null : c.id)}
+                      className="w-full p-3 text-left"
+                    >
+                      <span className="text-[var(--primary-text)]">{c.name}</span>
+                      <span className="text-xs text-[var(--muted-text)] ml-2">{c.category}</span>
+                    </button>
+                    {/* Expanded details */}
+                    {expandedCocktail === c.id && (
+                      <div className="px-4 pb-4 pt-2 border-t border-[var(--border)] space-y-2">
+                        {c.tasteProfile && (
+                          <div>
+                            <span className="text-xs text-[var(--muted-text)] uppercase">Taste</span>
+                            <p className="text-[var(--secondary-text)] text-sm">{c.tasteProfile}</p>
+                          </div>
+                        )}
+                        <div>
+                          <span className="text-xs text-[var(--muted-text)] uppercase">Ingredients</span>
+                          <div className="space-y-1">
+                            {c.ingredients.split(", ").map((ing, i) => (
+                              <p key={i} className="text-[var(--secondary-text)] text-sm">{ing}</p>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-xs text-[var(--muted-text)] uppercase">Measurements</span>
+                          <div className="space-y-1">
+                            {c.measurements.split(";").filter(m => m.trim()).map((m, i) => (
+                              <p key={i} className="text-[var(--secondary-text)] text-sm">{m.trim()}</p>
+                            ))}
+                          </div>
+                        </div>
+                        {c.rim && (<p className="text-xs text-[var(--secondary-text)]">Rim: {c.rim}</p>)}
+                        {c.method && (<p className="text-xs text-[var(--secondary-text)]">Method: {c.method}</p>)}
+                        {c.garnish && (<p className="text-xs text-[var(--secondary-text)]">Garnish: {c.garnish}</p>)}
+                        <span className="inline-block px-2 py-0.5 bg-[var(--elevated-card)] rounded text-xs text-[var(--muted-text)]">{c.availability}</span>
+                      </div>
                     )}
-                    <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full recipe →</p>
                   </div>
                 ))}
                 {searchResults.cocktails.length > 10 && (
@@ -153,21 +189,34 @@ export default function SearchPage() {
             </div>
           )}
 
-          {/* Wines */}
+          {/* Wines - Click to expand details */}
           {searchResults.wines.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍷 Wine ({searchResults.wines.length})</h2>
               <div className="space-y-2">
                 {searchResults.wines.slice(0, 10).map((w) => (
-                  <div
-                    key={w.id}
-                    onClick={() => router.push("/wine")}
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)] cursor-pointer active:bg-[var(--elevated-card)]"
-                  >
-                    <span className="text-[var(--primary-text)]">{w.name}</span>
-                    <span className="text-xs text-[var(--muted-text)] ml-2">{w.varietal}</span>
-                    <p className="text-xs text-[var(--secondary-text)] mt-1">{w.taste}</p>
-                    <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full details →</p>
+                  <div key={w.id} className="bg-[var(--card-background)] rounded-lg border border-[var(--border)] overflow-hidden">
+                    <button
+                      onClick={() => setExpandedWine(expandedWine === w.id ? null : w.id)}
+                      className="w-full p-3 text-left"
+                    >
+                      <span className="text-[var(--primary-text)]">{w.name}</span>
+                      <span className="text-xs text-[var(--muted-text)] ml-2">{w.varietal}</span>
+                    </button>
+                    {expandedWine === w.id && (
+                      <div className="px-4 pb-4 pt-2 border-t border-[var(--border)] space-y-2">
+                        <div className="grid grid-cols-3 gap-2">
+                          <div><span className="text-xs text-[var(--muted-text)] uppercase">Body</span><p className="text-[var(--secondary-text)] text-sm">{w.body}</p></div>
+                          <div><span className="text-xs text-[var(--muted-text)] uppercase">Acidity</span><p className="text-[var(--secondary-text)] text-sm">{w.acidity}</p></div>
+                          <div><span className="text-xs text-[var(--muted-text)] uppercase">Tannin</span><p className="text-[var(--secondary-text)] text-sm">{w.tannin}</p></div>
+                        </div>
+                        <div><span className="text-xs text-[var(--muted-text)] uppercase">Smell</span><p className="text-[var(--secondary-text)] text-sm">{w.smell}</p></div>
+                        <div><span className="text-xs text-[var(--muted-text)] uppercase">Taste</span><p className="text-[var(--secondary-text)] text-sm">{w.taste}</p></div>
+                        <div><span className="text-xs text-[var(--muted-text)] uppercase">Food Pairing</span><p className="text-[var(--secondary-text)] text-sm">{w.foodPairing}</p></div>
+                        {w.staffNotes && (<div><span className="text-xs text-[var(--muted-text)] uppercase">Staff Note</span><p className="text-[var(--secondary-text)] text-sm">{w.staffNotes}</p></div>)}
+                        <span className="inline-block px-2 py-0.5 bg-[var(--elevated-card)] rounded text-xs text-[var(--muted-text)]">{w.availability}</span>
+                      </div>
+                    )}
                   </div>
                 ))}
                 {searchResults.wines.length > 10 && (
@@ -177,26 +226,36 @@ export default function SearchPage() {
             </div>
           )}
 
-          {/* Foods */}
+          {/* Foods - Click to expand details */}
           {searchResults.foods.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍽️ Food ({searchResults.foods.length})</h2>
               <div className="space-y-2">
                 {searchResults.foods.slice(0, 10).map((f) => (
-                  <div
-                    key={f.id}
-                    onClick={() => router.push("/food")}
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)] cursor-pointer active:bg-[var(--elevated-card)]"
-                  >
-                    <span className="text-[var(--primary-text)]">{f.name}</span>
-                    <span className="text-xs text-[var(--muted-text)] ml-2">{f.category}</span>
-                    <p className="text-xs text-[var(--secondary-text)] mt-1">{f.description}</p>
-                    <div className="flex gap-1 mt-1">
-                      {f.glutenFree && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">GF</span>}
-                      {f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Vegan</span>}
-                      {f.vegetarian && !f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Veg</span>}
-                    </div>
-                    <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full details →</p>
+                  <div key={f.id} className="bg-[var(--card-background)] rounded-lg border border-[var(--border)] overflow-hidden">
+                    <button
+                      onClick={() => setExpandedFood(expandedFood === f.id ? null : f.id)}
+                      className="w-full p-3 text-left"
+                    >
+                      <span className="text-[var(--primary-text)]">{f.name}</span>
+                      <span className="text-xs text-[var(--muted-text)] ml-2">{f.category}</span>
+                    </button>
+                    {expandedFood === f.id && (
+                      <div className="px-4 pb-4 pt-2 border-t border-[var(--border)] space-y-2">
+                        <div><span className="text-xs text-[var(--muted-text)] uppercase">Description</span><p className="text-[var(--secondary-text)] text-sm">{f.description}</p></div>
+                        {f.keyIngredients && (<div><span className="text-xs text-[var(--muted-text)] uppercase">Ingredients</span><p className="text-[var(--secondary-text)] text-sm">{f.keyIngredients}</p></div>)}
+                        {f.serversWith && (<div><span className="text-xs text-[var(--muted-text)] uppercase">Served With</span><p className="text-[var(--secondary-text)] text-sm">{f.serversWith}</p></div>)}
+                        <div className="flex gap-1 flex-wrap">
+                          {f.glutenFree && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">GF</span>}
+                          {f.coeliacSuitable && <span className="px-1 bg-[var(--primary-accent)] text-white rounded text-xs">Coeliac</span>}
+                          {f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Vegan</span>}
+                          {f.vegetarian && !f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Veg</span>}
+                          {f.dairyFree && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">DF</span>}
+                          {f.nutFree && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">NF</span>}
+                        </div>
+                        <span className="inline-block px-2 py-0.5 bg-[var(--elevated-card)] rounded text-xs text-[var(--muted-text)]">{f.venueAvailability}</span>
+                      </div>
+                    )}
                   </div>
                 ))}
                 {searchResults.foods.length > 10 && (
