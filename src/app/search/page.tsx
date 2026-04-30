@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { cocktails } from "@/data/cocktails";
 import { wines } from "@/data/wines";
 import { foods } from "@/data/foods";
@@ -113,7 +114,7 @@ export default function SearchPage() {
         </div>
       )}
 
-      {/* Results - NOT clickable, just display */}
+      {/* Results - Clickable to go to detail pages */}
       {!query && !hasFilters ? (
         <div className="text-center py-8 text-[var(--muted-text)]">
           <p>Enter a search term or select a filter</p>
@@ -124,22 +125,24 @@ export default function SearchPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Cocktails */}
+          {/* Cocktails - Click to go to Bar page */}
           {searchResults.cocktails.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍸 Bar ({searchResults.cocktails.length})</h2>
               <div className="space-y-2">
                 {searchResults.cocktails.slice(0, 10).map((c) => (
-                  <div
+                  <Link
                     key={c.id}
-                    className="bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    href="/bar"
+                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
                   >
                     <span className="text-[var(--primary-text)]">{c.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{c.category}</span>
                     {c.tasteProfile && (
                       <p className="text-xs text-[var(--secondary-text)] mt-1">{c.tasteProfile}</p>
                     )}
-                  </div>
+                    <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full recipe →</p>
+                  </Link>
                 ))}
                 {searchResults.cocktails.length > 10 && (
                   <p className="text-xs text-[var(--muted-text)]">+{searchResults.cocktails.length - 10} more</p>
@@ -148,20 +151,22 @@ export default function SearchPage() {
             </div>
           )}
 
-          {/* Wines */}
+          {/* Wines - Click to go to Wine page */}
           {searchResults.wines.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍷 Wine ({searchResults.wines.length})</h2>
               <div className="space-y-2">
                 {searchResults.wines.slice(0, 10).map((w) => (
-                  <div
+                  <Link
                     key={w.id}
-                    className="bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    href="/wine"
+                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
                   >
                     <span className="text-[var(--primary-text)]">{w.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{w.varietal}</span>
                     <p className="text-xs text-[var(--secondary-text)] mt-1">{w.taste}</p>
-                  </div>
+                    <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full details →</p>
+                  </Link>
                 ))}
                 {searchResults.wines.length > 10 && (
                   <p className="text-xs text-[var(--muted-text)]">+{searchResults.wines.length - 10} more</p>
@@ -170,15 +175,16 @@ export default function SearchPage() {
             </div>
           )}
 
-          {/* Foods */}
+          {/* Foods - Click to go to Food page */}
           {searchResults.foods.length > 0 && (
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍽️ Food ({searchResults.foods.length})</h2>
               <div className="space-y-2">
                 {searchResults.foods.slice(0, 10).map((f) => (
-                  <div
+                  <Link
                     key={f.id}
-                    className="bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    href="/food"
+                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
                   >
                     <span className="text-[var(--primary-text)]">{f.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{f.category}</span>
@@ -188,7 +194,8 @@ export default function SearchPage() {
                       {f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Vegan</span>}
                       {f.vegetarian && !f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Veg</span>}
                     </div>
-                  </div>
+                    <p className="text-xs text-[var(--primary-accent)] mt-1">Tap to see full details →</p>
+                  </Link>
                 ))}
                 {searchResults.foods.length > 10 && (
                   <p className="text-xs text-[var(--muted-text)]">+{searchResults.foods.length - 10} more</p>
