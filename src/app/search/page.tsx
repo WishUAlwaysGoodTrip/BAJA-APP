@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
 import { cocktails } from "@/data/cocktails";
 import { wines } from "@/data/wines";
 import { foods } from "@/data/foods";
@@ -114,7 +113,7 @@ export default function SearchPage() {
         </div>
       )}
 
-      {/* Results */}
+      {/* Results - NOT clickable, just display */}
       {!query && !hasFilters ? (
         <div className="text-center py-8 text-[var(--muted-text)]">
           <p>Enter a search term or select a filter</p>
@@ -130,18 +129,20 @@ export default function SearchPage() {
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍸 Bar ({searchResults.cocktails.length})</h2>
               <div className="space-y-2">
-                {searchResults.cocktails.slice(0, 5).map((c) => (
-                  <Link
+                {searchResults.cocktails.slice(0, 10).map((c) => (
+                  <div
                     key={c.id}
-                    href="/bar"
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    className="bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
                   >
                     <span className="text-[var(--primary-text)]">{c.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{c.category}</span>
-                  </Link>
+                    {c.tasteProfile && (
+                      <p className="text-xs text-[var(--secondary-text)] mt-1">{c.tasteProfile}</p>
+                    )}
+                  </div>
                 ))}
-                {searchResults.cocktails.length > 5 && (
-                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.cocktails.length - 5} more</p>
+                {searchResults.cocktails.length > 10 && (
+                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.cocktails.length - 10} more</p>
                 )}
               </div>
             </div>
@@ -152,18 +153,18 @@ export default function SearchPage() {
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍷 Wine ({searchResults.wines.length})</h2>
               <div className="space-y-2">
-                {searchResults.wines.slice(0, 5).map((w) => (
-                  <Link
+                {searchResults.wines.slice(0, 10).map((w) => (
+                  <div
                     key={w.id}
-                    href="/wine"
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    className="bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
                   >
                     <span className="text-[var(--primary-text)]">{w.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{w.varietal}</span>
-                  </Link>
+                    <p className="text-xs text-[var(--secondary-text)] mt-1">{w.taste}</p>
+                  </div>
                 ))}
-                {searchResults.wines.length > 5 && (
-                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.wines.length - 5} more</p>
+                {searchResults.wines.length > 10 && (
+                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.wines.length - 10} more</p>
                 )}
               </div>
             </div>
@@ -174,18 +175,23 @@ export default function SearchPage() {
             <div>
               <h2 className="text-lg font-medium text-[var(--primary-text)] mb-3">🍽️ Food ({searchResults.foods.length})</h2>
               <div className="space-y-2">
-                {searchResults.foods.slice(0, 5).map((f) => (
-                  <Link
+                {searchResults.foods.slice(0, 10).map((f) => (
+                  <div
                     key={f.id}
-                    href="/food"
-                    className="block bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
+                    className="bg-[var(--card-background)] p-3 rounded-lg border border-[var(--border)]"
                   >
                     <span className="text-[var(--primary-text)]">{f.name}</span>
                     <span className="text-xs text-[var(--muted-text)] ml-2">{f.category}</span>
-                  </Link>
+                    <p className="text-xs text-[var(--secondary-text)] mt-1">{f.description}</p>
+                    <div className="flex gap-1 mt-1">
+                      {f.glutenFree && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">GF</span>}
+                      {f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Vegan</span>}
+                      {f.vegetarian && !f.vegan && <span className="px-1 bg-[var(--success)] text-[var(--background)] rounded text-xs">Veg</span>}
+                    </div>
+                  </div>
                 ))}
-                {searchResults.foods.length > 5 && (
-                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.foods.length - 5} more</p>
+                {searchResults.foods.length > 10 && (
+                  <p className="text-xs text-[var(--muted-text)]">+{searchResults.foods.length - 10} more</p>
                 )}
               </div>
             </div>
