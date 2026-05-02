@@ -6,6 +6,7 @@ import { foods, foodCategories, dietaryFilters } from "@/data/foods";
 export default function FoodPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [activeDietaryFilters, setActiveDietaryFilters] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   const toggleDietaryFilter = (filterId: string) => {
     setActiveDietaryFilters((prev) =>
@@ -39,9 +40,9 @@ export default function FoodPage() {
 
       {/* Show Filter Toggle */}
       <button
-        onClick={() => setActiveDietaryFilters(activeDietaryFilters.length > 0 ? [] : [])}
+        onClick={() => setShowFilters(!showFilters)}
         className={`w-full mb-3 p-2 rounded-lg border text-sm text-left flex justify-between items-center ${
-          activeDietaryFilters.length > 0
+          showFilters || activeDietaryFilters.length > 0
             ? "bg-[var(--elevated-card)] border-[var(--primary-accent)] text-[var(--primary-accent)]"
             : "bg-[var(--card-background)] border-[var(--border)] text-[var(--secondary-text)]"
         }`}
@@ -50,12 +51,14 @@ export default function FoodPage() {
         <span className="text-sm">
           {activeDietaryFilters.length > 0
             ? `${activeDietaryFilters.length} active`
+            : showFilters
+            ? "−"
             : "+"}
         </span>
       </button>
 
       {/* Dietary Filter Options */}
-      {activeDietaryFilters.length > 0 && (
+      {showFilters && (
         <div className="flex flex-wrap gap-2 mb-4 p-3 bg-[var(--elevated-card)] rounded-lg">
           {dietaryFilters.map((filter) => (
             <button
