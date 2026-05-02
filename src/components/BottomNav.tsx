@@ -16,7 +16,7 @@ export default function BottomNav() {
 
   return (
     <>
-      <nav className="fixed bottom-14 left-0 right-0 bg-[var(--card-background)] border-t border-[var(--border)] z-50">
+      <nav className="fixed bottom-8 left-0 right-0 bg-[var(--card-background)] border-t border-[var(--border)] z-50">
         <div className="flex justify-around items-center max-w-lg mx-auto">
           {navItems.map((item) => {
             const isActive = item.href === "/"
