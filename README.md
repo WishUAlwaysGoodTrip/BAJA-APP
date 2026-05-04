@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Overview
 
-## Getting Started
+This project was built as a practical staff-facing tool for a restaurant/bar environment. It helps staff quickly search cocktail recipes, wine profiles, food descriptions, and allergen information during service.
 
-First, run the development server:
+The app is designed for fast mobile use, with responsive desktop support.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Live Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+https://baja-app.vercel.app
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Cocktail recipe search
+- Wine reference and tasting notes
+- Food descriptions and staff selling notes
+- Allergen and dietary filtering
+- Vegetarian / vegan / gluten-free / coeliac-aware logic
+- Mobile-first responsive layout
+- Responsive desktop support
+- Vercel deployment with automatic updates from GitHub
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- React / Next.js
+- TypeScript
+- Tailwind CSS
+- Vercel
+- GitHub
+- Local structured data files
+- AI-assisted development workflow with Claude Code
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## My Role
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Defined the product requirements and user flow
+- Designed the mobile-first information architecture
+- Structured food, drink, wine, cocktail, and allergen data
+- Built and iterated the UI based on real staff use cases
+- Implemented search and dietary filtering logic
+- Deployed the app on Vercel
+- Managed GitHub version control and production updates
 
-## Deploy on Vercel
+## Screenshots
+Will add screenshots later.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Why I Built This
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Staff turnover is common in the Australian hospitality industry, which means restaurants often spend a significant amount of time training new team members. At the same time, staff need to respond quickly and accurately to customer questions, especially regarding allergens and dietary requirements.
+
+This app was built to consolidate scattered staff notes and printed reference materials into a searchable, mobile-friendly tool. It helps new restaurant staff quickly access accurate information about the menu, recipes, drinks, wines, and allergens during busy service periods.
